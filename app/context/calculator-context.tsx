@@ -89,6 +89,7 @@ export function CalculatorProvider({ children }: { children: ReactNode }) {
 
   const saasFeePerMonth = beds * 15;
   const savingsPerEnrolled = payroll / 12 / beds;
+  const fteThreshold = 120;
 
   const monthlyData = useMemo(() => {
     const data: MonthData[] = [];
@@ -107,7 +108,8 @@ export function CalculatorProvider({ children }: { children: ReactNode }) {
         enrolled = beds * y3EligiblePct;
       }
 
-      const payrollSavings = enrolled * savingsPerEnrolled;
+      const fteCoverage = Math.min(enrolled / fteThreshold, 1);
+      const payrollSavings = fteCoverage * payroll / 12;
       // LOS revenue: each enrolled resident contributes losMonths extra months of
       // rent per year, spread evenly across months → losMonths/12 per month
       const losRevenue = includeLosRevenue ? enrolled * avgMonthlyRent * (losMonths / 12) : 0;

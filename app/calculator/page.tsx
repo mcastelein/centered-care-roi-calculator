@@ -47,7 +47,8 @@ export default function CalculatorPage() {
 
   // Steady-state monthly values (Year 3)
   const steadyEnrolled = beds * y3EligiblePct;
-  const steadyPayrollSavings = steadyEnrolled * savingsPerEnrolled;
+  const steadyFteCoverage = Math.min(steadyEnrolled / 120, 1);
+  const steadyPayrollSavings = steadyFteCoverage * payroll / 12;
   const steadyLosRevenue = includeLosRevenue ? steadyEnrolled * avgMonthlyRent * (losMonths / 12) : 0;
   const steadySafelyYouSavings = includeSafelyYou ? beds * 17.5 : 0;
   const steadyNet = steadyPayrollSavings + steadyLosRevenue + steadySafelyYouSavings - saasFeePerMonth;
